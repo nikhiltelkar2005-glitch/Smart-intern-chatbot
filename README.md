@@ -12,7 +12,7 @@ chatbot-project/
 ├── chat-ui-react/       ← React + Vite frontend (Modern Chat UI)
 ├── database.sql         ← Pre-configured database tables & FAQ data
 ├── .env                 ← 🔒 Secret config (You must create this!)
-└── credentials.json     ← 🔒 Google Dialogflow key (Get from project owner!)
+└── credentials.json     ← 🔒 Google Dialogflow key (Get from Nikhil!)
 ```
 
 ---
@@ -36,8 +36,8 @@ git clone https://github.com/YOUR_USERNAME/chatbot-repo.git
 cd chatbot-repo
 ```
 
-### Step 2 — Get the Secret Files from the owner
-Because this project uses secure Google Cloud APIs and local databases, there are 2 things that are NOT on GitHub. **You must ask the project owner for these:**
+### Step 2 — Get the Secret Files from Nikhil
+Because this project uses secure Google Cloud APIs and local databases, there are 2 things that are NOT on GitHub. **You must ask Nikhil for these:**
 1. The **`credentials.json`** file. Put this directly inside the root folder.
 2. The **Dialogflow Project ID**.
 
@@ -130,4 +130,4 @@ When you chat, the Python backend automatically detects your intent and saves th
 ---
 
 ## 👨‍💻 Built By
-**Nikhil Telkar** — Business Analyst Intern
+**Nikhil Telkar** — Intern
