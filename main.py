@@ -7,8 +7,15 @@ import mysql.connector
 import os
 import uuid
 from dotenv import load_dotenv
+import json
 
 load_dotenv()
+
+# Railway credentials workaround
+if os.getenv("DIALOGFLOW_CREDENTIALS_JSON"):
+    with open("credentials.json", "w") as f:
+        f.write(os.getenv("DIALOGFLOW_CREDENTIALS_JSON"))
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
 app = FastAPI()
 
