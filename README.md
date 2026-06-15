@@ -1,18 +1,18 @@
-# TekoraAI Internship Chatbot 🤖
+# AI Internship Chatbot 🤖
 
-A full-stack AI-powered chatbot built for **TekoraAI** using Google Dialogflow, FastAPI (Python), MySQL, and React (Vite). The UI is fully responsive and features a modern glassmorphism design that works seamlessly on both desktop and mobile phones.
+A full-stack AI-powered chatbot built using Google Dialogflow, FastAPI (Python), MySQL, and React (Vite). The UI is fully responsive and features a modern glassmorphism design that works seamlessly on both desktop and mobile phones.
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-tekoraai-chatbot/
+chatbot-project/
 ├── main.py              ← FastAPI Python backend (Handles Dialogflow & MySQL)
 ├── chat-ui-react/       ← React + Vite frontend (Modern Chat UI)
 ├── database.sql         ← Pre-configured database tables & FAQ data
 ├── .env                 ← 🔒 Secret config (You must create this!)
-└── credentials.json     ← 🔒 Google Dialogflow key (Get from Nikhil!)
+└── credentials.json     ← 🔒 Google Dialogflow key (Get from project owner!)
 ```
 
 ---
@@ -32,13 +32,13 @@ Before you start, make sure you have these installed on your laptop:
 ### Step 1 — Clone the repo
 Open your terminal and run:
 ```bash
-git clone https://github.com/YOUR_USERNAME/tekoraai-chatbot.git
-cd tekoraai-chatbot
+git clone https://github.com/YOUR_USERNAME/chatbot-repo.git
+cd chatbot-repo
 ```
 
-### Step 2 — Get the Secret Files from Nikhil
-Because this project uses secure Google Cloud APIs and local databases, there are 2 things that are NOT on GitHub. **You must ask Nikhil for these:**
-1. The **`credentials.json`** file. Put this directly inside the `tekoraai-chatbot/` folder.
+### Step 2 — Get the Secret Files from the owner
+Because this project uses secure Google Cloud APIs and local databases, there are 2 things that are NOT on GitHub. **You must ask the project owner for these:**
+1. The **`credentials.json`** file. Put this directly inside the root folder.
 2. The **Dialogflow Project ID**.
 
 ### Step 3 — Create your `.env` file
@@ -48,8 +48,8 @@ DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=YOUR_MYSQL_PASSWORD
-DB_NAME=tekoraai_chatbot
-DIALOGFLOW_PROJECT_ID=paste_the_project_id_from_nikhil_here
+DB_NAME=ai_chatbot
+DIALOGFLOW_PROJECT_ID=paste_the_project_id_here
 GOOGLE_APPLICATION_CREDENTIALS=credentials.json
 ```
 
@@ -61,15 +61,15 @@ We have provided a `database.sql` file that instantly creates all 10 tables and 
 mysql -u root -p
 
 # 2. Inside MySQL, create the database:
-CREATE DATABASE tekoraai_chatbot;
+CREATE DATABASE ai_chatbot;
 EXIT;
 
 # 3. Back in your normal terminal, import the tables and data!
-mysql -u root -p tekoraai_chatbot < database.sql
+mysql -u root -p ai_chatbot < database.sql
 ```
 
 ### Step 5 — Set up the Python Backend
-Open a terminal inside the `tekoraai-chatbot/` folder:
+Open a terminal inside the project folder:
 ```bash
 # Create virtual environment
 python3 -m venv venv
@@ -130,4 +130,4 @@ When you chat, the Python backend automatically detects your intent and saves th
 ---
 
 ## 👨‍💻 Built By
-**Nikhil Telkar** — Business Analyst Intern @ TekoraAI
+**Nikhil Telkar** — Business Analyst Intern
