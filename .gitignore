@@ -1,0 +1,19 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Secrets - DO NOT upload these!
+.env
+credentials.json
+
+# Node
+node_modules/
+dist/
+.DS_Store
+
+# Logs
+*.log

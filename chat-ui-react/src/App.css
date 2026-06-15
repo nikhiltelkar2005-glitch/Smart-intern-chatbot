@@ -1,0 +1,22 @@
+.demo-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.demo-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.demo-content p {
+  font-size: 1.2rem;
+  color: #94a3b8;
+}

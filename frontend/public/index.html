@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Demo</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Main Website Content Simulation -->
+    <div class="demo-content">
+        <h1>Welcome to TekoraAI</h1>
+        <!-- <p>This is a plain background demo page to showcase the floating Chat UI.</p>
+        <p>Look at the bottom right corner for the chat widget!</p> -->
+    </div>
+
+    <!-- Chat Widget Container -->
+    <div id="chat-widget-container">
+        <!-- Floating Action Button -->
+        <button id="chat-fab" class="chat-fab" aria-label="Open Chat">
+            <i class="fa-solid fa-comment-dots" id="chat-icon"></i>
+            <i class="fa-solid fa-xmark hidden" id="close-icon"></i>
+        </button>
+
+        <!-- Chat Window (Initially Hidden) -->
+        <div id="chat-window" class="chat-window hidden">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="bot-avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h3>TekoraAI</h3>
+                        <span class="status">Online</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Messages Area -->
+            <div id="chat-messages" class="chat-messages">
+                <div class="message bot-message">
+                    <p>Hello! How can I help you today?</p>
+                </div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off">
+                <button id="send-btn" class="send-btn">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
