@@ -88,8 +88,9 @@ def send_email_notification(name, email, phone, inq_type, custom):
     try:
         msg = EmailMessage()
         msg['Subject'] = f"New Internship Application: {name}"
-        msg['From'] = sender_email
+        msg['From'] = f"TekoraAI Chatbot <{sender_email}>"
         msg['To'] = receiver_email
+        msg['Reply-To'] = email  # This ensures replies go straight to the intern
         
         content = f"""
 New Internship Application Received!
