@@ -8,6 +8,8 @@ import os  # Read environment variables
 import uuid  # Generate random IDs
 from dotenv import load_dotenv  # Read .env file
 import json  # Handle JSON data
+import smtplib
+from email.message import EmailMessage
 
 load_dotenv()  # Read the .env file (DB passwords, API keys)
 
@@ -72,6 +74,44 @@ def db_insert(table, columns, values):
     conn.commit()
     cursor.close()
     conn.close()
+
+def send_email_notification(name, email, phone, inq_type, custom):
+    """Send an automated email notification when a new internship application is received."""
+    sender_email = os.getenv("EMAIL_SENDER")
+    sender_password = os.getenv("EMAIL_PASSWORD")
+    receiver_email = os.getenv("EMAIL_RECEIVER")
+    
+    if not sender_email or not sender_password or not receiver_email:
+        print("⚠️ Email credentials not configured in .env. Skipping email notification.")
+        return
+
+    try:
+        msg = EmailMessage()
+        msg['Subject'] = f"New Internship Application: {name}"
+        msg['From'] = sender_email
+        msg['To'] = receiver_email
+        
+        content = f"""
+New Internship Application Received!
+
+Name: {name}
+Email: {email}
+Phone: {phone}
+Inquiry Type: {inq_type}
+Custom Inquiry Details: {custom}
+
+Please log in to the database or follow up with the applicant.
+        """
+        msg.set_content(content)
+        
+        # Connect to Gmail SMTP Server
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(sender_email, sender_password)
+            smtp.send_message(msg)
+            
+        print(f"📧 Notification email sent successfully to {receiver_email}")
+    except Exception as e:
+        print(f"❌ Failed to send email: {e}")
 
 @app.get("/")
 def root():
@@ -215,6 +255,9 @@ def chat(request: MessageRequest):
                           ['intern_name', 'intern_email', 'education_level', 'domain', 'phone'],
                           (name, email, custom, inq_type, phone))
                 print(f"✅ SAVED: New Internship Application into intern_registration for {name}")
+                
+                # Send email notification
+                send_email_notification(name, email, phone, inq_type, custom)
 
         except Exception as e:
             print(f"❌ ERROR saving to DB: {e}")
