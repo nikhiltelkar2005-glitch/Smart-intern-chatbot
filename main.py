@@ -1,4 +1,4 @@
-from fastapi import FastAPI # The web framework
+from fastapi import FastAPI, BackgroundTasks # The web framework
 from fastapi.middleware.cors import CORSMiddleware # Security permission
 from pydantic import BaseModel # Data validation
 import google.cloud.dialogflow as dialogflow 
@@ -105,8 +105,8 @@ Please log in to the database or follow up with the applicant.
         """
         msg.set_content(content)
         
-        # Connect to Gmail SMTP Server
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        # Connect to Gmail SMTP Server with a timeout
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10) as smtp:
             smtp.login(sender_email, sender_password)
             smtp.send_message(msg)
             
@@ -119,7 +119,7 @@ def root():
     return {"status": "TekoraAI Chatbot is running"}
 
 @app.post("/chat")
-def chat(request: MessageRequest):
+def chat(request: MessageRequest, background_tasks: BackgroundTasks):
     project_id = os.getenv("DIALOGFLOW_PROJECT_ID")
     session_id = request.session_id or str(uuid.uuid4())
 
@@ -257,8 +257,8 @@ def chat(request: MessageRequest):
                           (name, email, custom, inq_type, phone))
                 print(f"✅ SAVED: New Internship Application into intern_registration for {name}")
                 
-                # Send email notification
-                send_email_notification(name, email, phone, inq_type, custom)
+                # Send email notification in the background
+                background_tasks.add_task(send_email_notification, name, email, phone, inq_type, custom)
 
         except Exception as e:
             print(f"❌ ERROR saving to DB: {e}")
