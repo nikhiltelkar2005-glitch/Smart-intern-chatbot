@@ -109,13 +109,13 @@ const ChatWidget = () => {
               <p>
                 {msg.text.split(/(https?:\/\/[^\s"']+|[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+|tekoraai\.com\/?|\+?\d{1,3}[\s-]?\d{10})/g).map((part, index) => {
                   if (/^https?:\/\/[^\s"']+$/.test(part)) {
-                    return <a key={index} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
+                    return <a key={index} href={part} target="_blank" rel="noopener noreferrer" className="chat-link">{part}</a>;
                   } else if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+$/.test(part)) {
-                    return <a key={index} href={`mailto:${part}`} style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
+                    return <a key={index} href={`mailto:${part}`} className="chat-link">{part}</a>;
                   } else if (/^tekoraai\.com\/?$/.test(part)) {
-                    return <a key={index} href={`https://${part}`} target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
+                    return <a key={index} href={`https://${part}`} target="_blank" rel="noopener noreferrer" className="chat-link">{part}</a>;
                   } else if (/^\+?\d{1,3}[\s-]?\d{10}$/.test(part)) {
-                    return <a key={index} href={`tel:${part.replace(/[\s-]/g, '')}`} style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
+                    return <a key={index} href={`tel:${part.replace(/[\s-]/g, '')}`} className="chat-link">{part}</a>;
                   }
                   return part;
                 })}
