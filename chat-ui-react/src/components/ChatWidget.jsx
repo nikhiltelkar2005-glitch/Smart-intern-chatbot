@@ -107,13 +107,15 @@ const ChatWidget = () => {
           {messages.map((msg) => (
             <div key={msg.id} className={`message ${msg.sender}-message`}>
               <p>
-                {msg.text.split(/(https?:\/\/[^\s"']+|[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+|tekoraai\.com\/?)/g).map((part, index) => {
+                {msg.text.split(/(https?:\/\/[^\s"']+|[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+|tekoraai\.com\/?|\+?\d{1,3}[\s-]?\d{10})/g).map((part, index) => {
                   if (/^https?:\/\/[^\s"']+$/.test(part)) {
                     return <a key={index} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
                   } else if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+$/.test(part)) {
                     return <a key={index} href={`mailto:${part}`} style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
                   } else if (/^tekoraai\.com\/?$/.test(part)) {
                     return <a key={index} href={`https://${part}`} target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
+                  } else if (/^\+?\d{1,3}[\s-]?\d{10}$/.test(part)) {
+                    return <a key={index} href={`tel:${part.replace(/[\s-]/g, '')}`} style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
                   }
                   return part;
                 })}
