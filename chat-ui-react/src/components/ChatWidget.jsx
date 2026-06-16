@@ -7,7 +7,7 @@ const ChatWidget = () => {
   const [messages, setMessages] = useState([
     { id: 1, sender: 'bot', text: `Hey there! Welcome to TekoraAI Intern Assistant! 👋
 
-I'm here to help you with everything about your internship at TekoraAI. Just type your question and I'll answer instantly.
+I'm here to help you with everything about your internship at TekoraAI. Just type your question and I'll answer instantly. You can also apply for your internship directly from here!
 
 You can ask me about:
 📋 Internship Application & Eligibility
