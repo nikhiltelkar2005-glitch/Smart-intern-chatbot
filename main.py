@@ -120,8 +120,11 @@ Please log in to the database or follow up with the applicant.
             else:
                 print(f"⚠️ Resend returned status code {response.status}")
                 
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode('utf-8')
+        print(f"❌ Resend API Error ({e.code}): {error_body}")
     except urllib.error.URLError as e:
-        print(f"❌ Failed to send email via Resend: {e}")
+        print(f"❌ Failed to connect to Resend: {e.reason}")
     except Exception as e:
         print(f"❌ Unexpected error sending email: {e}")
 
