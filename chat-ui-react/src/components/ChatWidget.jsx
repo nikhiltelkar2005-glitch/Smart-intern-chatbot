@@ -107,8 +107,8 @@ const ChatWidget = () => {
           {messages.map((msg) => (
             <div key={msg.id} className={`message ${msg.sender}-message`}>
               <p>
-                {msg.text.split(/(https?:\/\/[^\s]+|[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/g).map((part, index) => {
-                  if (/^https?:\/\/[^\s]+$/.test(part)) {
+                {msg.text.split(/(https?:\/\/[^\s"']+|[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/g).map((part, index) => {
+                  if (/^https?:\/\/[^\s"']+$/.test(part)) {
                     return <a key={index} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
                   } else if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+$/.test(part)) {
                     return <a key={index} href={`mailto:${part}`} style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
