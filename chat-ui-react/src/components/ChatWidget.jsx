@@ -108,10 +108,10 @@ const ChatWidget = () => {
             <div key={msg.id} className={`message ${msg.sender}-message`}>
               <p>
                 {msg.text.split(/(https?:\/\/[^\s]+|[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/g).map((part, index) => {
-                  if (part.match(/https?:\/\/[^\s]+/)) {
-                    return <a key={index} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa', textDecoration: 'underline' }}>{part}</a>;
-                  } else if (part.match(/[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+/)) {
-                    return <a key={index} href={`mailto:${part}`} style={{ color: '#a78bfa', textDecoration: 'underline' }}>{part}</a>;
+                  if (/^https?:\/\/[^\s]+$/.test(part)) {
+                    return <a key={index} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
+                  } else if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+$/.test(part)) {
+                    return <a key={index} href={`mailto:${part}`} style={{ color: '#a78bfa', textDecoration: 'underline', pointerEvents: 'auto' }}>{part}</a>;
                   }
                   return part;
                 })}
