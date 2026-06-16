@@ -106,7 +106,16 @@ const ChatWidget = () => {
         <div className="chat-messages">
           {messages.map((msg) => (
             <div key={msg.id} className={`message ${msg.sender}-message`}>
-              <p>{msg.text}</p>
+              <p>
+                {msg.text.split(/(https?:\/\/[^\s]+|[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/g).map((part, index) => {
+                  if (part.match(/https?:\/\/[^\s]+/)) {
+                    return <a key={index} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#a78bfa', textDecoration: 'underline' }}>{part}</a>;
+                  } else if (part.match(/[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+/)) {
+                    return <a key={index} href={`mailto:${part}`} style={{ color: '#a78bfa', textDecoration: 'underline' }}>{part}</a>;
+                  }
+                  return part;
+                })}
+              </p>
             </div>
           ))}
           {isTyping && (
