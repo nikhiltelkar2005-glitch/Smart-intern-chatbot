@@ -105,8 +105,10 @@ Please log in to the database or follow up with the applicant.
         """
         msg.set_content(content)
         
-        # Connect to Gmail SMTP Server with a timeout
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10) as smtp:
+        # Connect to Gmail SMTP Server with a timeout using port 587 (STARTTLS)
+        with smtplib.SMTP('smtp.gmail.com', 587, timeout=10) as smtp:
+            smtp.ehlo()
+            smtp.starttls()
             smtp.login(sender_email, sender_password)
             smtp.send_message(msg)
             
