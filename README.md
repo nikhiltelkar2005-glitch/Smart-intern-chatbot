@@ -1,133 +1,188 @@
-# AI Internship Chatbot 🤖
+# 🤖 TekoraAI Intern Assistant Chatbot
 
-A full-stack AI-powered chatbot built using Google Dialogflow, FastAPI (Python), MySQL, and React (Vite). The UI is fully responsive and features a modern glassmorphism design that works seamlessly on both desktop and mobile phones.
+> An enterprise-grade AI-powered chatbot for automating internship management at **TekoraAI**.
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=flat-square&logo=vercel)](https://smart-intern-chatbot.vercel.app)
+[![Backend](https://img.shields.io/badge/Backend-Railway-blueviolet?style=flat-square&logo=railway)](https://smart-intern-chatbot-production.up.railway.app)
+[![Python](https://img.shields.io/badge/Python-FastAPI-green?style=flat-square&logo=python)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-blue?style=flat-square&logo=react)](https://react.dev/)
+[![AI](https://img.shields.io/badge/AI-Google%20Dialogflow-orange?style=flat-square&logo=google)](https://dialogflow.cloud.google.com/)
+
+---
+
+## ✨ Features
+
+- 🧠 **AI Conversations** — Powered by Google Dialogflow for natural language understanding
+- 💾 **Auto Database Storage** — Every conversation is automatically saved to MySQL in real time
+- 📧 **Email Notifications** — Automated emails sent to the company via Resend API on new applications
+- 🔗 **Smart Link Detection** — Phone numbers, emails, and URLs are auto-detected and made clickable
+- 💅 **Premium Glassmorphism UI** — Animated floating chat widget with dark purple theme
+- 🌐 **Fully Deployed** — Live on Vercel (frontend) + Railway (backend + database)
+- 🔄 **Auto CI/CD** — Every GitHub push auto-deploys the full stack
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-chatbot-project/
-├── main.py              ← FastAPI Python backend (Handles Dialogflow & MySQL)
-├── chat-ui-react/       ← React + Vite frontend (Modern Chat UI)
-├── database.sql         ← Pre-configured database tables & FAQ data
-├── .env                 ← 🔒 Secret config (You must create this!)
-└── credentials.json     ← 🔒 Google Dialogflow key (Get from Nikhil!)
+User (Browser)
+    ↓
+React Widget (Vercel)
+    ↓ POST /chat
+Python FastAPI (Railway)
+    ↓
+Google Dialogflow AI
+    ↓
+Python Backend
+    ├── MySQL Database (Railway)
+    └── Resend API → Company Email Inbox
 ```
 
 ---
 
-## ⚙️ Prerequisites
+## 🛠️ Technology Stack
 
-Before you start, make sure you have these installed on your laptop:
-
-- **Python 3.10+** → [Download here](https://python.org)
-- **Node.js 18+** → [Download here](https://nodejs.org)
-- **MySQL Server** → [Download here](https://dev.mysql.com/downloads/installer/) (Make sure you know your root password!)
+| Layer | Technology |
+|---|---|
+| Frontend | React.js + Vite |
+| Frontend Hosting | Vercel |
+| Backend | Python + FastAPI |
+| Backend Hosting | Railway |
+| AI Engine | Google Dialogflow |
+| Database | MySQL |
+| Database Hosting | Railway MySQL |
+| Email Delivery | Resend API |
+| Version Control | GitHub |
 
 ---
 
-## 🚀 Setup Steps (Follow these exactly)
+## 🤖 Chatbot Intents (9 Total)
 
-### Step 1 — Clone the repo
-Open your terminal and run:
+| # | Intent | Data Saved |
+|---|---|---|
+| 1 | Leave Application | `leave_applications` |
+| 2 | Tools Access Request | `tool_access_requests` |
+| 3 | Certificate Information | `certificate_requests` |
+| 4 | Internship Extension | `extension_requests` |
+| 5 | Performance Review Request | `performance_reviews` |
+| 6 | Application Process | `intern_registration` |
+| 7 | Offer Letter & Documents | `offer_letter_requests` |
+| 8 | Recommendation Request | `recommendation_requests` |
+| 9 | Internship Application *(New)* | `intern_registration` + **email sent** |
+
+---
+
+## 🚀 Getting Started (Local Development)
+
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- MySQL (local)
+- Google Dialogflow credentials (`credentials.json`)
+
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/chatbot-repo.git
-cd chatbot-repo
+git clone https://github.com/nikhiltelkar2005-glitch/Smart-intern-chatbot.git
+cd Smart-intern-chatbot
 ```
 
-### Step 2 — Get the Secret Files from Nikhil
-Because this project uses secure Google Cloud APIs and local databases, there are 2 things that are NOT on GitHub. **You must ask Nikhil for these:**
-1. The **`credentials.json`** file. Put this directly inside the root folder.
-2. The **Dialogflow Project ID**.
+### 2. Set Up the Backend
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
-### Step 3 — Create your `.env` file
-Create a new file named `.env` right next to `main.py` and paste this inside. **Important: Change `YOUR_MYSQL_PASSWORD` to your actual MySQL password!**
+Create a `.env` file in the root:
 ```env
+GOOGLE_APPLICATION_CREDENTIALS=credentials.json
+DIALOGFLOW_PROJECT_ID=your_project_id
+
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_USER=root
-DB_PASSWORD=YOUR_MYSQL_PASSWORD
-DB_NAME=ai_chatbot
-DIALOGFLOW_PROJECT_ID=paste_the_project_id_here
-GOOGLE_APPLICATION_CREDENTIALS=credentials.json
+DB_PASSWORD=your_password
+DB_NAME=tekoraai_chatbot
+
+RESEND_API_KEY=your_resend_api_key
+EMAIL_RECEIVER=your_email@gmail.com
 ```
 
-### Step 4 — Set up the MySQL Database
-We have provided a `database.sql` file that instantly creates all 10 tables and imports the 38 FAQ questions! Run these commands in your terminal:
-
+Run the backend:
 ```bash
-# 1. Log into MySQL (type your password when prompted)
-mysql -u root -p
-
-# 2. Inside MySQL, create the database:
-CREATE DATABASE ai_chatbot;
-EXIT;
-
-# 3. Back in your normal terminal, import the tables and data!
-mysql -u root -p ai_chatbot < database.sql
-```
-
-### Step 5 — Set up the Python Backend
-Open a terminal inside the project folder:
-```bash
-# Create virtual environment
-python3 -m venv venv
-
-# Activate it (Mac/Linux)
-source venv/bin/activate
-# (On Windows use: venv\Scripts\activate)
-
-# Install required packages
-pip install fastapi uvicorn mysql-connector-python google-cloud-dialogflow python-dotenv
-
-# Start the server!
 uvicorn main:app --reload
 ```
-✅ You should see it running at `http://localhost:8000`
 
-### Step 6 — Set up the React Frontend
-Open a **brand new terminal tab**, and run:
+### 3. Set Up the Frontend
 ```bash
 cd chat-ui-react
 npm install
+```
+
+Create `chat-ui-react/.env.local`:
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+Run the frontend:
+```bash
 npm run dev
 ```
-✅ The website is now running at `http://localhost:5173`
 
 ---
 
-## 💬 How to Use the Chatbot
+## 🌐 Deployment
 
-1. Open `http://localhost:5173` in your browser.
-2. Click the purple chat bubble in the bottom right corner.
-3. Talk to the bot! It will automatically save your answers to the database. Try asking:
-   - "I want to apply for leave"
-   - "I need access to Slack"
-   - "I want a certificate"
-   - "I want to register for the internship"
-   - "Can I get a performance review?"
+### Backend → Railway
+1. Push to GitHub — Railway auto-deploys.
+2. Set all environment variables in the Railway **Variables** tab.
 
----
-
-## 🗄️ Database Tables mapping
-
-When you chat, the Python backend automatically detects your intent and saves the data to these tables:
-
-| Table | Dialogflow Intent | What it stores |
-|---|---|---|
-| `faq` | *(Automated matching)* | The 38 FAQ questions & answers (Read-only knowledge base) |
-| `leave_applications` | `Leave Application intent` | Leave requests with dates and reasons |
-| `tool_access_requests` | `Tools Access Request` | Software tool requests (Slack, Jira, etc.) |
-| `certificate_requests` | `Certificate Information` | Requests for completion certificates |
-| `extension_requests` | `Internship Extension` | Requests to extend internship duration |
-| `performance_reviews` | `Performance Review Request` | Monthly performance evaluations |
-| `intern_registration` | `Application Process` | New intern registrations |
-| `offer_letter_requests` | `Offer Letter & Documents` | Requests for official offer letters |
-| `recommendation_requests` | `Recommendation Request` | Requests for letters of recommendation |
-| `feedback` | *(Reserved)* | General feedback from interns |
+### Frontend → Vercel
+1. Push to GitHub — Vercel auto-deploys.
+2. Set `VITE_API_URL` in Vercel environment variables.
 
 ---
 
-## 👨‍💻 Built By
-**Nikhil Telkar** — Intern
+## 📧 Email Notification System
+
+When a user completes an internship application through the chatbot, the backend:
+1. Saves all data to the MySQL `intern_registration` table.
+2. Fires an async background task to send an email via the **Resend API**.
+3. The email lands in the company inbox with the applicant's info and a `Reply-To` pointing directly to their email address.
+
+> **Note:** On Resend's free tier, you can only send to the email address you registered with. To send to any address, verify your domain at [resend.com/domains](https://resend.com/domains).
+
+---
+
+## 📁 Project Structure
+
+```
+tekoraai-chatbot/
+├── main.py                  # FastAPI backend — core logic
+├── requirements.txt         # Python dependencies
+├── Procfile                 # Railway start command
+├── credentials.json         # Google service account (gitignored)
+├── .env                     # Local environment variables (gitignored)
+├── database.sql             # MySQL schema
+└── chat-ui-react/           # React frontend
+    ├── src/
+    │   ├── App.jsx
+    │   └── components/
+    │       ├── ChatWidget.jsx   # Main chat component
+    │       └── ChatWidget.css   # Premium UI styling
+    └── package.json
+```
+
+---
+
+## 👨‍💻 Author
+
+**Nikhil Telkar**  
+Intern @ TekoraAI  
+📧 nikhiltelkar19@gmail.com
+
+---
+
+## 📄 License
+
+This project was built as part of an internship at **TekoraAI**. All rights reserved.
