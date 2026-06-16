@@ -8,8 +8,8 @@ import os  # Read environment variables
 import uuid  # Generate random IDs
 from dotenv import load_dotenv  # Read .env file
 import json  # Handle JSON data
-import smtplib
-from email.message import EmailMessage
+import urllib.request
+import urllib.error
 
 load_dotenv()  # Read the .env file (DB passwords, API keys)
 
@@ -76,21 +76,16 @@ def db_insert(table, columns, values):
     conn.close()
 
 def send_email_notification(name, email, phone, inq_type, custom):
-    """Send an automated email notification when a new internship application is received."""
-    sender_email = os.getenv("EMAIL_SENDER")
-    sender_password = os.getenv("EMAIL_PASSWORD")
+    """Send an automated email notification when a new internship application is received via Resend."""
+    resend_api_key = os.getenv("RESEND_API_KEY")
     receiver_email = os.getenv("EMAIL_RECEIVER")
     
-    if not sender_email or not sender_password or not receiver_email:
-        print("⚠️ Email credentials not configured in .env. Skipping email notification.")
+    if not resend_api_key or not receiver_email:
+        print("⚠️ Resend credentials not configured in .env. Skipping email notification.")
         return
 
     try:
-        msg = EmailMessage()
-        msg['Subject'] = f"New Internship Application: {name}"
-        msg['From'] = f"TekoraAI Chatbot <{sender_email}>"
-        msg['To'] = receiver_email
-        msg['Reply-To'] = email  # This ensures replies go straight to the intern
+        url = "https://api.resend.com/emails"
         
         content = f"""
 New Internship Application Received!
@@ -103,18 +98,32 @@ Custom Inquiry Details: {custom}
 
 Please log in to the database or follow up with the applicant.
         """
-        msg.set_content(content)
         
-        # Connect to Gmail SMTP Server with a timeout using port 587 (STARTTLS)
-        with smtplib.SMTP('smtp.gmail.com', 587, timeout=10) as smtp:
-            smtp.ehlo()
-            smtp.starttls()
-            smtp.login(sender_email, sender_password)
-            smtp.send_message(msg)
-            
-        print(f"📧 Notification email sent successfully to {receiver_email}")
+        data = {
+            "from": "TekoraAI Chatbot <onboarding@resend.dev>",
+            "to": [receiver_email],
+            "subject": f"New Internship Application: {name}",
+            "reply_to": email,
+            "text": content
+        }
+        
+        headers = {
+            "Authorization": f"Bearer {resend_api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        req = urllib.request.Request(url, data=json.dumps(data).encode('utf-8'), headers=headers, method='POST')
+        
+        with urllib.request.urlopen(req, timeout=10) as response:
+            if response.status in (200, 201):
+                print(f"📧 Notification email sent successfully to {receiver_email} via Resend")
+            else:
+                print(f"⚠️ Resend returned status code {response.status}")
+                
+    except urllib.error.URLError as e:
+        print(f"❌ Failed to send email via Resend: {e}")
     except Exception as e:
-        print(f"❌ Failed to send email: {e}")
+        print(f"❌ Unexpected error sending email: {e}")
 
 @app.get("/")
 def root():
