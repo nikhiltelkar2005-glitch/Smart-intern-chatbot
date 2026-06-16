@@ -1,42 +1,42 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import google.cloud.dialogflow as dialogflow
-from google.protobuf.json_format import MessageToDict
-import mysql.connector
-import os
-import uuid
-from dotenv import load_dotenv
-import json
+from fastapi import FastAPI # The web framework
+from fastapi.middleware.cors import CORSMiddleware # Security permission
+from pydantic import BaseModel # Data validation
+import google.cloud.dialogflow as dialogflow 
+from google.protobuf.json_format import MessageToDict # Google AI
+import mysql.connector # Database connection
+import os  # Read environment variables
+import uuid  # Generate random IDs
+from dotenv import load_dotenv  # Read .env file
+import json  # Handle JSON data
 
-load_dotenv()
+load_dotenv()  # Read the .env file (DB passwords, API keys)
 
-# Railway credentials workaround
-if os.getenv("DIALOGFLOW_CREDENTIALS_JSON"):
+# Railway credentials json content as a variable
+if os.getenv("DIALOGFLOW_CREDENTIALS_JSON"): 
     with open("credentials.json", "w") as f:
         f.write(os.getenv("DIALOGFLOW_CREDENTIALS_JSON"))
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
-app = FastAPI()
+app = FastAPI()  # Create the web server
 
-app.add_middleware(
+app.add_middleware(  # Allow frontend to connect
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["*"], # allow_origins=["*"] means "allow ANY website to call this API
+    allow_methods=["*"], # allows all HTTP methods
+    allow_headers=["*"], # allows all HTTP header
 )
 
 class MessageRequest(BaseModel):
-    message: str
-    session_id: str = None
+    message: str    # Required: the user's text
+    session_id: str = None  # Optional: conversation ID
 
-def get_db_connection():
+def get_db_connection(): # create db connection
     return mysql.connector.connect(
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        database=os.getenv("DB_NAME")
+        host=os.getenv("DB_HOST"), # Server address 
+        port=os.getenv("DB_PORT"), # port number
+        user=os.getenv("DB_USER"), # username
+        password=os.getenv("DB_PASSWORD"), # password
+        database=os.getenv("DB_NAME") # Which database
     )
 
 def get_str(params, *keys):
@@ -200,6 +200,21 @@ def chat(request: MessageRequest):
                           ['intern_name', 'intern_email', 'recommendation_type'],
                           (name, email, rec_type))
                 print(f"✅ SAVED: Recommendation request ({rec_type}) for {name}")
+
+            # ─── 9. NEW INTERNSHIP APPLICATION ──────────────────────
+            elif intent_name == 'Internship Application':
+                # Grab parameters from the new intent
+                name = get_str(params, 'name', 'intern_name')
+                email = get_str(params, 'email', 'intern_email')
+                phone = get_str(params, 'phone')
+                # Map inquiry to domain so it fits the table
+                inq_type = get_str(params, 'inquiry_type')
+                custom = get_str(params, 'custom_inquiry')
+                
+                db_insert('intern_registration',
+                          ['intern_name', 'intern_email', 'education_level', 'domain', 'phone'],
+                          (name, email, custom, inq_type, phone))
+                print(f"✅ SAVED: New Internship Application into intern_registration for {name}")
 
         except Exception as e:
             print(f"❌ ERROR saving to DB: {e}")
