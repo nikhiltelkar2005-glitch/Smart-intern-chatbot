@@ -5,7 +5,29 @@ import './ChatWidget.css';
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { id: 1, sender: 'bot', text: 'Hello! How can I help you today?' }
+    { id: 1, sender: 'bot', text: `Hey there! Welcome to TekoraAI Intern Assistant! 👋
+
+I'm here to help you with everything about your internship at TekoraAI. Just type your question and I'll answer instantly.
+
+You can ask me about:
+📋 Internship Application & Eligibility
+📜 Offer Letter & Certificates
+💰 Stipend Information
+🗓️ Leave & Attendance Policy
+🛠️ Tools & Software Access
+👨‍💼 Mentor Information
+📁 Project Details & Assignment
+📊 Performance & Evaluation
+🎓 Training Information
+🏠 Work Mode
+🔗 Referral & Recommendations
+
+For direct support:
+📧 customersupport@tekoraai.com
+📞 +91 9449730488
+🌐 tekoraai.com
+
+What would you like to know today?` }
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
